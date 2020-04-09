@@ -25,7 +25,7 @@
             app:cardElevation="5dp"
             android:layout_marginTop="10dp"
             android:clickable="true"
-            android:alpha="0.7"
+            android:alpha="0.9"
             card_view:cardBackgroundColor="@android:color/white">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

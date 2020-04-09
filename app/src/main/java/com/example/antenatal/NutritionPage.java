@@ -40,7 +40,7 @@ public class NutritionPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_nutition_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_nutrition_page, container, false);
         title = view.findViewById(R.id.title);
         content = view.findViewById(R.id.content);
         img = view.findViewById(R.id.img);

@@ -23,7 +23,7 @@
             card_view:cardCornerRadius="5dp"
             card_view:cardUseCompatPadding="true"
             app:cardElevation="5dp"
-            android:alpha="0.7"
+            android:alpha="0.9"
             android:layout_marginTop="10dp"
             android:clickable="true"
             card_view:cardBackgroundColor="@android:color/white">
