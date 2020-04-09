@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         dbColumnList.trimeseterTwo = new ArrayList<>();
         dbColumnList.trimeseterThree= new ArrayList<>();
 
+        dbColumnList.momHealth= new ArrayList<>();
+        dbColumnList.babyHealth = new ArrayList<>();
+        dbColumnList.breastFeeding= new ArrayList<>();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -181,6 +184,70 @@ public class MainActivity extends AppCompatActivity {
                     );
                     dbColumnList.trimeseterThree.add(trimesterModel);
                 }
+
+
+                //MOM HEALTH
+                is = getApplication().getAssets().open("pregnancyhealth.json");
+                size = is.available();
+                buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+
+                json = new String(buffer, "UTF-8");
+                jsonarray = new JSONArray(json);
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject = jsonarray.getJSONObject(i);
+
+                    myModels.trimesterModel trimesterModel = new myModels().new trimesterModel(
+                            "Mother's Health",
+                            jsonobject.getString("title").replace("\r\n", "<br>"),
+                            jsonobject.getString("tipDescription").replace("\r\n", "<br>"),
+                            jsonobject.getString("title").replace("\r\n", "<br>")
+                    );
+                    dbColumnList.momHealth.add(trimesterModel);
+                }
+
+                //Baby HEALTH
+                is = getApplication().getAssets().open("babyhealth.json");
+                size = is.available();
+                buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+
+                json = new String(buffer, "UTF-8");
+                jsonarray = new JSONArray(json);
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject = jsonarray.getJSONObject(i);
+
+                    myModels.trimesterModel trimesterModel = new myModels().new trimesterModel(
+                            "Baby's Health",
+                            jsonobject.getString("title").replace("\r\n", "<br>"),
+                            jsonobject.getString("tipDescription").replace("\r\n", "<br>"),
+                            jsonobject.getString("title").replace("\r\n", "<br>")
+                    );
+                    dbColumnList.babyHealth.add(trimesterModel);
+                }
+
+                //breastfeeding
+                is = getApplication().getAssets().open("breastfeeding.json");
+                size = is.available();
+                buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+
+                json = new String(buffer, "UTF-8");
+                jsonarray = new JSONArray(json);
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject = jsonarray.getJSONObject(i);
+
+                    myModels.trimesterModel trimesterModel = new myModels().new trimesterModel(
+                            "Breastfeeding",
+                            jsonobject.getString("title").replace("\r\n", "<br>"),
+                            jsonobject.getString("tipDescription").replace("\r\n", "<br>"),
+                            jsonobject.getString("title").replace("\r\n", "<br>")
+                    );
+                    dbColumnList.breastFeeding.add(trimesterModel);
+                }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -190,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Intent intent = new Intent(getApplication(),TrimesterTips.class);
+            Intent intent = new Intent(getApplication(),HealthTips.class);
             startActivity(intent);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();

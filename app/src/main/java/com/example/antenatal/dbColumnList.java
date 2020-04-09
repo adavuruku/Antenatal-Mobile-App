@@ -12,7 +12,8 @@ public class dbColumnList {
     public static List <myModels.tipsModel> dailyTips, weeklyTips, monthlyTips,
             nutritionTips;
 
-    public static List <myModels.trimesterModel> trimeseterOne, trimeseterTwo, trimeseterThree;
+    public static List <myModels.trimesterModel> trimeseterOne,
+            trimeseterTwo, trimeseterThree, momHealth, babyHealth, breastFeeding;
 
     public static int TabPostion;
     public static String TabText;
@@ -54,6 +55,7 @@ public class dbColumnList {
             "4th Month", "5th Month", "6th Month", "7th Month", "8th Month",
             "9th Month", "10th Month"};
     public static final String trimesterTabs[] = {"1st Trimester", "2nd Trimester", "3rd Trimester"};
+    public static final String healthTabs[] = {"Mom's Health", "Baby's Health", "Breastfeeding"};
 
     public static class pregnantInformation implements BaseColumns{
         public static final String TABLE_NAME = "pregnantInformation";

@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReadTips"
+        <activity android:name=".HealthTips"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ReadTips"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TrimesterTips"
@@ -29,7 +32,8 @@
         <activity
             android:name=".DailyTips"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".about"
+        <activity
+            android:name=".about"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
