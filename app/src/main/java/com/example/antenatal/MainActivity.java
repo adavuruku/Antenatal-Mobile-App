@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Intent intent = new Intent(getApplication(),about.class);
+            Intent intent = new Intent(getApplication(),TrimesterTips.class);
             startActivity(intent);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
