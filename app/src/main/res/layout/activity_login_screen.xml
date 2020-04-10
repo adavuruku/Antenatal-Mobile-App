@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/loginColor"
+    android:background="@color/newBack"
+    android:alpha="0.7"
     tools:context=".LoginScreen">
 
     <LinearLayout
@@ -36,18 +37,18 @@
             android:lineSpacingExtra="6dp"
             android:textSize="30dp"
             android:text="Please Login..."
-            android:textColor="@color/titleColor"
+            android:textColor="@color/colorWhite"
             android:textStyle="bold" />
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/simpleregno"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Reg No. "
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:hint="Enter Hospital ID. "
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_marginBottom="20dp"
             android:textAppearance="?android:attr/textAppearanceMedium">
 
             <EditText
@@ -58,35 +59,14 @@
                 android:drawablePadding="8dp"
                 android:inputType="text"
                 android:lines="1"
-                android:text="13u2314"
+
+                android:padding="10dp"
+                android:text="ABUTH42639249"
                 android:longClickable="true"
                 android:maxLines="1"
+                android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/simplePassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/simpleregno"
-            android:hint="Password"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textAppearance="?android:attr/textAppearanceMedium">
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@android:drawable/ic_lock_lock"
-                android:drawablePadding="8dp"
-                android:inputType="textPassword"
-                android:lines="1"
-                android:text="12345"
-                android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="20dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -98,7 +78,7 @@
             android:padding="10dp"
             android:text="Click To Login"
             android:textAllCaps="false"
-            android:textColor="@color/colorGreen"
+            android:textColor="@color/colorWhite"
             android:textSize="14sp" />
     </LinearLayout>
 

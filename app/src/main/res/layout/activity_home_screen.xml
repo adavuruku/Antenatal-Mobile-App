@@ -29,7 +29,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 android:background="@color/colorAbuad"
                 app:contentScrim="?attr/colorPrimary"
-                app:title="ABUAD - ADO EKITI"
+                app:title="ABUTH - ADO EKITI"
                 app:subtitle="@string/app_name"
                 app:expandedTitleMarginStart="6dp"
                 app:expandedTitleMarginEnd="8dp"
