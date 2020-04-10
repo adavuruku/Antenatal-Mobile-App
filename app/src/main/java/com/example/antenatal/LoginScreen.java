@@ -113,11 +113,11 @@ public class LoginScreen extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (response.length()<=2){
                             displayMessage("Error: Wrong Hospital ID !!!");
-                            Toast.makeText(getApplicationContext(), response ,Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getApplicationContext(), response ,Toast.LENGTH_LONG).show();
                         }else{
                             allResult = response;
-                            Toast.makeText(getApplicationContext(), response ,Toast.LENGTH_LONG).show();
-//                            new ReadJSON().execute();
+//                            Toast.makeText(getApplicationContext(), response ,Toast.LENGTH_LONG).show();
+                            new ReadJSON().execute();
                         }
                     }
                 },
@@ -198,8 +198,8 @@ public class LoginScreen extends AppCompatActivity {
                     pd.cancel();
                     pd.hide();
                 }
-//                Toast.makeText(getApplicationContext(),"Welcome "+ studentName + " To ABUAD IT - MOBILE APP",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplication(), TrimesterTips.class);
+                Toast.makeText(getApplicationContext(),"Welcome "+ studentName + " To ABUADTH Antenatal APP",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplication(), HomeScreen.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
