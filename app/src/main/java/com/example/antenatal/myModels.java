@@ -40,4 +40,41 @@ public class myModels {
             return subContent;
         }
     }
+
+    public class notice {
+
+        private String body;
+        private String title;
+        private String author;
+        private String date;
+        private String noticeId;
+
+        public notice(String body, String title, String author, String date, String noticeId) {
+            this.body = body;
+            this.title = title;
+            this.author = author;
+            this.date = date;
+            this.noticeId = noticeId;
+        }
+
+        public String getBody() {
+            return body;
+        }
+
+        public String getNoticeID() {
+            return noticeId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public String getDate() {
+            return date;
+        }
+    }
 }

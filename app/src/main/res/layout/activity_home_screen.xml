@@ -8,13 +8,15 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
+    <?xml version="1.0" encoding="utf-8"?>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".HomeScreen">
+        tools:context=".TrimesterTips">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -30,7 +32,7 @@
                 android:background="@color/colorAbuad"
                 app:contentScrim="?attr/colorPrimary"
                 app:title="ABUTH - ADO EKITI"
-                app:subtitle="@string/app_name"
+                app:subtitle="Antenatal App"
                 app:expandedTitleMarginStart="6dp"
                 app:expandedTitleMarginEnd="8dp"
                 app:expandedTitleTextAppearance="@android:color/transparent"
@@ -41,26 +43,31 @@
                     android:layout_height="200dp"
                     android:fitsSystemWindows="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/abuad"
+                    android:src="@drawable/baby1"
                     app:layout_collapseMode="parallax"
                     tools:ignore="ContentDescription" />
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:layout_collapseMode="pin"
-                        app:popupTheme="@style/AppTheme.PopupOverlay"
-                        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                        android:elevation="4dp"
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    android:elevation="4dp"
 
-                        />
+                    />
             </com.google.android.material.appbar.SubtitleCollapsingToolbarLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
-                app:tabMode="scrollable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:tabMode="fixed"
+                app:tabIndicatorHeight="5dp"
+                app:tabTextColor="@color/colorBlack"
+                app:tabIndicatorColor="@color/newBack"
+                app:tabBackground="@drawable/tabcolor"
+                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
                 android:background="@color/colorGreen" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -72,7 +79,9 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

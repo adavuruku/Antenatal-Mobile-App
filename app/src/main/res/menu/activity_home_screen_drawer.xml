@@ -9,22 +9,45 @@
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/appstatus"
-            android:icon="@drawable/ic_update"
-            android:title="@string/menu_appstatus" />
+            android:id="@+id/day"
+            android:icon="@drawable/ic_plan"
+            android:title="@string/menu_daily" />
         <item
-            android:id="@+id/register"
-            android:icon="@drawable/ic_list"
-            android:title="@string/menu_register" />
+            android:id="@+id/week"
+            android:icon="@drawable/ic_plan"
+            android:title="@string/menu_weekly" />
+        <item
+            android:id="@+id/month"
+            android:icon="@drawable/ic_plan"
+            android:title="@string/menu_monthly" />
+        <item
+            android:id="@+id/trimester"
+            android:icon="@drawable/ic_plan"
+            android:title="@string/menu_trimester" />
+        <item
+            android:id="@+id/fetal"
+            android:icon="@drawable/ic_pregnant"
+            android:title="@string/menu_fetal" />
+
+        <item
+            android:id="@+id/health"
+            android:icon="@drawable/ic_doctor"
+            android:title="@string/menu_health" />
+
+        <item
+            android:id="@+id/nutrition"
+            android:icon="@drawable/ic_diet"
+            android:title="@string/menu_nutrition" />
+
         <item
             android:id="@+id/about"
-            android:icon="@drawable/ic_edit"
+            android:icon="@drawable/ic_editnav"
             android:title="@string/menu_about" />
         <item
-            android:id="@+id/close"
+            android:id="@+id/closenav"
             android:title="Sign Out"
             android:orderInCategory="300"
-            android:icon="@drawable/ic_logout"/>
+            android:icon="@drawable/ic_logoutnav"/>
     </group>
 
 </menu>
