@@ -1,6 +1,7 @@
 package com.example.antenatal;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +18,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    private SharedPreferences MyId;
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         dbColumnList.babyHealth = new ArrayList<>();
         dbColumnList.breastFeeding= new ArrayList<>();
 
+
+
+        MyId = this.getSharedPreferences("MyId", this.MODE_PRIVATE);
+         userID = MyId.getString("MyId", "");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -257,10 +263,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Intent intent = new Intent(getApplication(),LoginScreen.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            finish();
+
+
+            if(userID.equals("")){
+                Intent intent = new Intent(getApplication(),LoginScreen.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }else{
+                Intent intent = new Intent(getApplication(), HomeScreen.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
+            }
+
         }
     }
     public void startProg() {

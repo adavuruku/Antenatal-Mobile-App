@@ -7,7 +7,7 @@
         android:id="@+id/about"
         android:orderInCategory="50"
         android:title="About"
-        android:icon="@drawable/ic_edit"
+        android:icon="@drawable/ic_about"
         app:showAsAction="ifRoom"
         />
     <item
@@ -15,5 +15,5 @@
         android:title="Sign Out"
         android:orderInCategory="60"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_logout"/>
+        android:icon="@drawable/ic_logoutnav"/>
 </menu>

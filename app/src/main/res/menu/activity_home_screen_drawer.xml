@@ -22,16 +22,16 @@
             android:title="@string/menu_monthly" />
         <item
             android:id="@+id/trimester"
-            android:icon="@drawable/ic_plan"
+            android:icon="@drawable/ic_trimester"
             android:title="@string/menu_trimester" />
         <item
             android:id="@+id/fetal"
-            android:icon="@drawable/ic_pregnant"
+            android:icon="@drawable/ic_fetal"
             android:title="@string/menu_fetal" />
 
         <item
             android:id="@+id/health"
-            android:icon="@drawable/ic_doctor"
+            android:icon="@drawable/ic_health"
             android:title="@string/menu_health" />
 
         <item
@@ -41,13 +41,13 @@
 
         <item
             android:id="@+id/about"
-            android:icon="@drawable/ic_editnav"
+            android:icon="@drawable/ic_about"
             android:title="@string/menu_about" />
         <item
             android:id="@+id/closenav"
             android:title="Sign Out"
             android:orderInCategory="300"
-            android:icon="@drawable/ic_logoutnav"/>
+            android:icon="@drawable/ic_logout"/>
     </group>
 
 </menu>

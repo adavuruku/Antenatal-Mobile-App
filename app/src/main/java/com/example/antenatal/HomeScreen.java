@@ -177,7 +177,7 @@ public class HomeScreen extends AppCompatActivity implements Profile.OnFragmentI
 
         View header = navigationView.getHeaderView(0);
 
-        ImageView imageV = header.findViewById(R.id.profile_image);
+        ImageView imageV = header.findViewById(R.id.navImage);
         int min = 1; int max=12;
         Random r = new Random();
         int imgId = r.nextInt((max - min) + 1) + min;
@@ -260,13 +260,14 @@ public class HomeScreen extends AppCompatActivity implements Profile.OnFragmentI
                     profile.setRetainInstance(true);
                     return profile;
                 case 1:
-                    Notice notice = new Notice();
-                    notice.setRetainInstance(true);
-                    return notice;
-                case 2:
                     Appointment appointment = new Appointment();
                     appointment.setRetainInstance(true);
                     return appointment;
+                case 2:
+                    Notice notice = new Notice();
+                    notice.setRetainInstance(true);
+                    return notice;
+
                 default:
                     return null;
             }

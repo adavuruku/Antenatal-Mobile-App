@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:background="@color/colorWhite"
+        android:background="@color/newBack"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.example.antenatal.HomeScreen">
 
@@ -21,6 +21,7 @@
         android:layout_marginTop="16dp"
         android:clickable="true"
         app:cardCornerRadius="2dp"
+        android:alpha="0.9"
         app:contentPadding="8dp"
         app:layout_anchorGravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
