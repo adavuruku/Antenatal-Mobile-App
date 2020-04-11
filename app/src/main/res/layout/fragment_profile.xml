@@ -3,8 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Profile">
-
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/newBack"
+        android:scrollbars="none"
+        app:behavior_overlapTop="18dp"
+        android:padding="5dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -18,5 +26,5 @@
         <include layout="@layout/thirdcontent"/>
 
     </LinearLayout>
-
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

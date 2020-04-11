@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class dbHelper extends SQLiteOpenHelper {
     // Database Info
     // Database Info
-    public static final String DATABASE_NAME = "ANTEN.db";
+    public static final String DATABASE_NAME = "ANTN.db";
     private static final int DATABASE_VERSION = 1;
     private Context mcontext;
     private SQLiteDatabase mdatabase;

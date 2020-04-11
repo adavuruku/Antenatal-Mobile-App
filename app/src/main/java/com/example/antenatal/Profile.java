@@ -25,10 +25,10 @@ import java.util.Locale;
 
 public class Profile extends Fragment {
     TextView myname, myphone,myaddress,noday,daydetail,
-    noweek,weekdetail,nomonth,monthdetail,dayC, weekC,ldp,dd, monthC;
+    noweek,weekdetail,nomonth,monthdetail,dayC, weekC,ldp,dd, monthC, trim;
     CalendarView calendarView2;
     ProgressBar progressBar;
-    ImageView fetalimage;
+    ImageView img;
 
     private dbHelper dbHelper;
 
@@ -43,7 +43,7 @@ public class Profile extends Fragment {
     public static Fragment getInstance(int position) {
         Bundle bundle = new Bundle();
         bundle.putInt("pos", position);
-        FetalPage tabFragment = new FetalPage();
+        Profile tabFragment = new Profile();
         tabFragment.setArguments(bundle);
         return tabFragment;
     }
@@ -51,7 +51,7 @@ public class Profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        post = getArguments().getInt("pos");
+//        post = getArguments().getInt("pos");
     }
 
     @Override
@@ -73,6 +73,8 @@ public class Profile extends Fragment {
         noweek = view.findViewById(R.id.noweek);
         weekdetail = view.findViewById(R.id.weekdetail);
 
+        trim = view.findViewById(R.id.trim);
+
         nomonth = view.findViewById(R.id.nomonth);
         monthdetail = view.findViewById(R.id.monthdetail);
 
@@ -82,7 +84,7 @@ public class Profile extends Fragment {
         monthC = view.findViewById(R.id.monthC);
         ldp = view.findViewById(R.id.ldp);
         dd = view.findViewById(R.id.dd);
-        fetalimage = view.findViewById(R.id.fetalimage);
+        img = view.findViewById(R.id.fetalimage);
 
         progressBar = view.findViewById(R.id.progressBar);
         calendarView2 = view.findViewById(R.id.calendarView2);
@@ -104,24 +106,33 @@ public class Profile extends Fragment {
                     allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_BABYDESCRIPTION));
                     allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_NOOFBABY));
 
-                    String DATE_FORMAT= "EEE, d MMM yyyy, HH:mm:ss";
+                    String DATE_FORMAT= "yyyy-MM-dd";
                     SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+
+
+
+                    Date START = sdf.parse(
+                            allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_STATRDATE))
+                    );
+                    Date END = sdf.parse(
+                            allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_ENDDATE))
+                    );
 
                     Calendar startDate = Calendar.getInstance();
                     Calendar endDate = Calendar.getInstance();
-                    startDate.setTime(
-                                    sdf.parse(
-                                            allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_STATRDATE))
-                                    ));
+                    startDate.set(START.getYear(),START.getMonth(),START.getDay());
+                    endDate.set(END.getYear(),END.getMonth(),END.getDay());
 
-                    endDate.setTime(
-                            sdf.parse(
-                                    allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_ENDDATE))
-                            ));
-                    ldp.setText(sdf.format(startDate.getTime()));
-                    dd.setText(sdf.format(endDate.getTime()));
+                    String DATE_FORMATTWO= "EEE, dd MMMM yyyy";
+                    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMATTWO);
 
-//                    calendarView2.setMaxDate();
+                    ldp.setText("Conception Date : " + dateFormat.format(startDate.getTime()));
+                    dd.setText("Expected Due Date : "+ dateFormat.format(endDate.getTime()));
+
+                    System.out.printf("Year o " + END.getYear());
+                    System.out.printf("Year o " + START.getYear());
+
+//                    calendarView2.setMaxDate(endDate.getTimeInMillis());
 
                     monthsBetweenDates(allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_STATRDATE)));
                 }
@@ -129,7 +140,7 @@ public class Profile extends Fragment {
 
                 allnews = dbHelper.getAUser(userID);
                 if (allnews.getCount() > 0) {
-
+                    allnews.moveToFirst();
                     myname.setText(allnews.getString(allnews.getColumnIndex(dbColumnList.antenantalUser.COLUMN_FULLNAME)));
                     myaddress.setText(allnews.getString(allnews.getColumnIndex(dbColumnList.antenantalUser.COLUMN_CONTACTADD)));
                     myphone.setText(allnews.getString(allnews.getColumnIndex(dbColumnList.antenantalUser.COLUMN_PHONE)) + " / "+
@@ -170,18 +181,17 @@ public class Profile extends Fragment {
 
         date1.clear();
         date1.set(sYear, sMonth, sDay);
+
         date2.clear();
         date2.set(tYear, tMonth, tDay);
 
         long diff = date2.getTimeInMillis() - date1.getTimeInMillis();
-
-        dayCount = (int) diff / (24 * 60 * 60 * 1000);
-
-        weekCount = (int) diff / (7 * 24 * 60 * 60 * 1000);
-        weekCount += diff / (7 * 24 * 60 * 60 * 1000) > 0 ? 1:0;
-
-        monthCount = (int) diff / (4*7 * 24 * 60 * 60 * 1000);
-        monthCount += diff / (4*7 * 24 * 60 * 60 * 1000) > 0 ? 1:0;
+        dayCount = (int) (diff / (24 * 60 * 60 * 1000));
+        weekCount = (int) (diff / (7 * 24 * 60 * 60 * 1000));
+        weekCount += (diff % (7 * 24 * 60 * 60 * 1000)) > 0 ? 1:0;
+//        System.currentTimeMillis()
+        monthCount = (int) (diff / (2419200000f));
+        monthCount += (diff % (2419200000f)) > 0 ? 1:0;
 
         noday.setText(dayCount +"\n Days");
         noweek.setText(weekCount + "\n Weeks");
@@ -192,6 +202,98 @@ public class Profile extends Fragment {
         monthC.setText(monthCount + "\n Months");
 
         progressBar.setProgress(dayCount);
+
+        if (monthCount<=3){
+            trim.setText("First Trimester");
+        }else if (monthCount <=6){
+            trim.setText("Second Trimester");
+        }else{
+            trim.setText("Third Trimester");
+        }
+
+
+        int post = dayCount;
+        if(post <=7){
+            img.setImageResource(R.drawable.week1);
+        }else if(post <=14){
+            img.setImageResource(R.drawable.week2);
+        }else if(post <=21){
+            img.setImageResource(R.drawable.week3);
+        }else if(post <=28){
+            img.setImageResource(R.drawable.week4);
+        }else if(post <=35){
+            img.setImageResource(R.drawable.week5);
+        }else if(post <=42){
+            img.setImageResource(R.drawable.week6);
+        }else if(post <=49){
+            img.setImageResource(R.drawable.week7);
+        }else if(post <=56){
+            img.setImageResource(R.drawable.week8);
+        }else if(post <=63){
+            img.setImageResource(R.drawable.week9);
+        }else if(post <=70){
+            img.setImageResource(R.drawable.week10);
+        }else if(post <=77){
+            img.setImageResource(R.drawable.week11);
+        }else if(post <=84){
+            img.setImageResource(R.drawable.week12);
+        }else if(post <=91){
+            img.setImageResource(R.drawable.week13);
+        }else if(post <=98){
+            img.setImageResource(R.drawable.week14);
+        }else if(post <=105){
+            img.setImageResource(R.drawable.week15);
+        }else if(post <=112){
+            img.setImageResource(R.drawable.week16);
+        }else if(post <=119){
+            img.setImageResource(R.drawable.week17);
+        }else if(post <=126){
+            img.setImageResource(R.drawable.week18);
+        }else if(post <=133){
+            img.setImageResource(R.drawable.week19);
+        }else if(post <=140){
+            img.setImageResource(R.drawable.week20);
+        }else if(post <=147){
+            img.setImageResource(R.drawable.week21);
+        }else if(post <=154){
+            img.setImageResource(R.drawable.week22);
+        }else if(post <=161){
+            img.setImageResource(R.drawable.week23);
+        }else if(post <=168){
+            img.setImageResource(R.drawable.week24);
+        }else if(post <=175){
+            img.setImageResource(R.drawable.week25);
+        }else if(post <=182){
+            img.setImageResource(R.drawable.week26);
+        }else if(post <=189){
+            img.setImageResource(R.drawable.week27);
+        }else if(post <=196){
+            img.setImageResource(R.drawable.week28);
+        }else if(post <=203){
+            img.setImageResource(R.drawable.week29);
+        }else if(post <=210){
+            img.setImageResource(R.drawable.week30);
+        }else if(post <=217){
+            img.setImageResource(R.drawable.week31);
+        }else if(post <=224){
+            img.setImageResource(R.drawable.week32);
+        }else if(post <=231){
+            img.setImageResource(R.drawable.week33);
+        }else if(post <=238){
+            img.setImageResource(R.drawable.week34);
+        }else if(post <=245){
+            img.setImageResource(R.drawable.week35);
+        }else if(post <=252){
+            img.setImageResource(R.drawable.week36);
+        }else if(post <=259){
+            img.setImageResource(R.drawable.week37);
+        }else if(post <=266){
+            img.setImageResource(R.drawable.week38);
+        }else if(post <=273){
+            img.setImageResource(R.drawable.week39);
+        }else {
+            img.setImageResource(R.drawable.week40);
+        }
     }
 
 

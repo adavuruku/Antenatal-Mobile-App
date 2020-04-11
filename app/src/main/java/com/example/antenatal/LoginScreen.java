@@ -155,12 +155,12 @@ public class LoginScreen extends AppCompatActivity {
                 JSONArray jsonarray = new JSONArray(allResult);
 
                 JSONObject jsonobject = jsonarray.getJSONObject(0);
-                dbHelper dbHelper = new dbHelper(getApplicationContext());
+                dbHelper = new dbHelper(getApplicationContext());
                 studentName = jsonobject.getString("patientName");
 
                 dbHelper.saveUserInformation(
                         jsonobject.getString("HID"),jsonobject.getString("patientName"),
-                        jsonobject.getString("contactAddress"),jsonobject.getString("ABUTH188087"),
+                        jsonobject.getString("contactAddress"),jsonobject.getString("createdBy"),
                         jsonobject.getString("dateReg"),jsonobject.getString("officeAddress"),
                         jsonobject.getString("patientEmail"),jsonobject.getString("illnesDescription"),
                         jsonobject.getString("patientLocalGovt"),jsonobject.getString("patientState"),
@@ -177,6 +177,7 @@ public class LoginScreen extends AppCompatActivity {
                             jsonobject.getString("babyGenderDescription")
 
                     );
+
                 }
 
                 //userID

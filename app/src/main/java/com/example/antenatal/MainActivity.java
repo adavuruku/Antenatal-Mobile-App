@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
             }else{
-                Intent intent = new Intent(getApplication(), HomeScreen.class);
+                Intent intent = new Intent(getApplication(), LoginScreen.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
