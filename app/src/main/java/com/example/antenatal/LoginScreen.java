@@ -37,8 +37,6 @@ public class LoginScreen extends AppCompatActivity {
     TextView userid, password;
     ProgressDialog pd;
     AlertDialog.Builder builder;
-//    String address = "http://192.168.1.64/abuadit/abuadrest.php";
-//    String address = "http://localhost/abuadit/abuadrest.php";
     String address = "https://antenantal.000webhostapp.com/antenatalrest.php";
     String allResult, userName, userPassword, studentName;
     SharedPreferences MyId;
@@ -128,7 +126,7 @@ public class LoginScreen extends AppCompatActivity {
                         if(pd.isShowing()){
                             pd.hide();
                         }
-                        displayMessage("Error: No Internet Connection !!!");
+                        displayMessage(error + " - Error: No Internet Connection !!!");
                     }
                 }
         ) {
@@ -157,7 +155,7 @@ public class LoginScreen extends AppCompatActivity {
                 JSONArray jsonarray = new JSONArray(allResult);
 
                 JSONObject jsonobject = jsonarray.getJSONObject(0);
-                dbHelper = new dbHelper(getApplicationContext());
+                dbHelper dbHelper = new dbHelper(getApplicationContext());
                 studentName = jsonobject.getString("patientName");
 
                 dbHelper.saveUserInformation(
