@@ -114,14 +114,15 @@ public class Profile extends Fragment {
                     Date START = sdf.parse(
                             allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_STATRDATE))
                     );
+
                     Date END = sdf.parse(
                             allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_ENDDATE))
                     );
 
                     Calendar startDate = Calendar.getInstance();
                     Calendar endDate = Calendar.getInstance();
-                    startDate.set(START.getYear(),START.getMonth(),START.getDay());
-                    endDate.set(END.getYear(),END.getMonth(),END.getDay());
+                    startDate.set(START.getYear()+1900,START.getMonth(),START.getDay());
+                    endDate.set(END.getYear()+1900,END.getMonth(),END.getDay());
 
                     String DATE_FORMATTWO= "EEE, dd MMMM yyyy";
                     SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMATTWO);
@@ -129,12 +130,9 @@ public class Profile extends Fragment {
                     ldp.setText("Conception Date : " + dateFormat.format(startDate.getTime()));
                     dd.setText("Expected Due Date : "+ dateFormat.format(endDate.getTime()));
 
-                    System.out.printf("Year o " + END.getYear());
-                    System.out.printf("Year o " + START.getYear());
-
 //                    calendarView2.setMaxDate(endDate.getTimeInMillis());
 
-                    monthsBetweenDates(allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_STATRDATE)));
+                    monthsBetweenDates(START);
                 }
                 allnews.close();
 
@@ -153,15 +151,15 @@ public class Profile extends Fragment {
     }
 
 
-    public void monthsBetweenDates(String startDate){
+    public void monthsBetweenDates(Date startDate){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar startCalender = Calendar.getInstance();
         Calendar todayCalender = Calendar.getInstance();
         try {
-            startCalender.setTime(sdf.parse(startDate));
+            startCalender.setTimeInMillis(startDate.getTime());
             Date today = new Date();
             Date todayWithZeroTime = sdf.parse(sdf.format(today));
-            todayCalender.setTime(todayWithZeroTime);
+            todayCalender.setTimeInMillis(today.getTime());
 
         } catch (ParseException e) {
             e.printStackTrace();
