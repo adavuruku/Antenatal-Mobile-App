@@ -38,6 +38,11 @@ public class MonthlyTips extends AppCompatActivity implements MonthlyPage.OnFrag
         tabs.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+        int tabIndex = Integer.parseInt(getIntent().getStringExtra("TABID"));
+        TabLayout.Tab tab = tabs.getTabAt(tabIndex);
+        tab.select();
+
         changeBackgroundImage();
     }
     public void changeBackgroundImage(){

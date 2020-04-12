@@ -11,7 +11,7 @@ import java.util.List;
 public class dbColumnList {
     public static List <myModels.tipsModel> dailyTips, weeklyTips, monthlyTips,
             nutritionTips;
-
+    public static String address = "https://antenantal.000webhostapp.com/antenatalrest.php";
     public static List <myModels.trimesterModel> trimeseterOne,
             trimeseterTwo, trimeseterThree, momHealth, babyHealth, breastFeeding;
 

@@ -37,6 +37,11 @@ public class DailyTips extends AppCompatActivity implements DailyPage.OnFragment
         tabs.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+        int tabIndex = Integer.parseInt(getIntent().getStringExtra("TABID"));
+        TabLayout.Tab tab = tabs.getTabAt(tabIndex);
+        tab.select();
+
         changeBackgroundImage();
 //        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 //            @Override public void onTabSelected(TabLayout.Tab tab) {

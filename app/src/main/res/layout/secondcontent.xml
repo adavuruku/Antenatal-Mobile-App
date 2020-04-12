@@ -9,7 +9,7 @@
         android:background="@color/colorWhite"
         android:layout_marginTop="5dp"
         android:padding="5dp"
-        android:alpha="0.8"
+        android:alpha="0.85"
         tools:showIn="@layout/fragment_profile">
 
     <LinearLayout
@@ -177,7 +177,6 @@
                     android:padding="6dp"
                     android:text="Details Of The Month"
                     android:textColor="@color/colorBlack"
-
                     app:fontFamily="sans-serif-medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -255,6 +254,7 @@
                 android:background="@drawable/downcornerconstrain">
 
                 <ImageView
+                    android:id="@+id/nutriimage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/nutriimage"

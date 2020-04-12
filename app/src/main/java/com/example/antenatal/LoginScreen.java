@@ -37,7 +37,7 @@ public class LoginScreen extends AppCompatActivity {
     TextView userid, password;
     ProgressDialog pd;
     AlertDialog.Builder builder;
-    String address = "https://antenantal.000webhostapp.com/antenatalrest.php";
+//    String address = "https://antenantal.000webhostapp.com/antenatalrest.php";
     String allResult, userName, userPassword, studentName;
     SharedPreferences MyId;
     public byte[] byteArray=null;
@@ -60,7 +60,7 @@ public class LoginScreen extends AppCompatActivity {
                     displayMessage("Invalid Data's Provided - Please Verify");
                 } else {
                     //login online
-                    volleyJsonArrayRequest(address);
+                    volleyJsonArrayRequest(dbColumnList.address);
                 }
             }
         });

@@ -1,11 +1,13 @@
 package com.example.antenatal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +16,29 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class Profile extends Fragment {
@@ -28,14 +46,18 @@ public class Profile extends Fragment {
     noweek,weekdetail,nomonth,monthdetail,dayC, weekC,ldp,dd, monthC, trim;
     CalendarView calendarView2;
     ProgressBar progressBar;
-    ImageView img;
+    ImageView img,nutriimage;
+    CardView month, day, week;
+    doctorAdapter doctorListAdapter,contactListAdapter ;
+    RecyclerView doctor,contact;
+    private List<myModels.Doctor> allDoctorList, allContactList;
 
     private dbHelper dbHelper;
 
     private OnFragmentInteractionListener mListener;
     private SharedPreferences MyId;
-    String userID;
-    int dayCount,monthCount,weekCount;
+    String userID,allResult,allContactResult;
+    int dayCount,monthCount,weekCount,trimCount;
     public Profile() {
         // Required empty public constructor
     }
@@ -67,6 +89,8 @@ public class Profile extends Fragment {
         myphone = view.findViewById(R.id.myphone);
         myaddress = view.findViewById(R.id.myaddress);
 
+        month = view.findViewById(R.id.month);
+
         noday = view.findViewById(R.id.noday);
         daydetail = view.findViewById(R.id.daydetail);
 
@@ -78,20 +102,320 @@ public class Profile extends Fragment {
         nomonth = view.findViewById(R.id.nomonth);
         monthdetail = view.findViewById(R.id.monthdetail);
 
-        dayC = view.findViewById(R.id.dayC);
-        weekC = view.findViewById(R.id.weekC);
+        MyId = getActivity().getSharedPreferences("MyId", getActivity().MODE_PRIVATE);
+        userID = MyId.getString("MyId", "");
 
-        monthC = view.findViewById(R.id.monthC);
+        allDoctorList = new ArrayList<>();
+        allContactList = new ArrayList<>();
+        dbHelper = new dbHelper(getContext());
         ldp = view.findViewById(R.id.ldp);
         dd = view.findViewById(R.id.dd);
         img = view.findViewById(R.id.fetalimage);
+        nutriimage = view.findViewById(R.id.nutriimage);
+        nutriimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), NutritionTips.class);
+                intent.putExtra("TABID",String.valueOf(weekCount - 1));
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
+
+
+        day = view.findViewById(R.id.day);
+        day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), DailyTips.class);
+                intent.putExtra("TABID",String.valueOf(dayCount - 1));
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
+        week = view.findViewById(R.id.week);
+        week.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), WeeklyTips.class);
+                intent.putExtra("TABID",String.valueOf(weekCount - 1));
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
+        month = view.findViewById(R.id.month);
+        month.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MonthlyTips.class);
+                intent.putExtra("TABID",String.valueOf(monthCount - 1));
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), FetalTips.class);
+                intent.putExtra("TABID",String.valueOf(weekCount - 1));
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
+
+
+        trim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), TrimesterTips.class);
+                intent.putExtra("TABID",String.valueOf(trimCount));
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            }
+        });
 
         progressBar = view.findViewById(R.id.progressBar);
         calendarView2 = view.findViewById(R.id.calendarView2);
 
         LoadLocalData();
 
+        doctor = view.findViewById(R.id.doctors);
+        doctor.setLayoutManager(new LinearLayoutManager(getContext()));
+        doctor.setHasFixedSize(true);
+
+        contact = view.findViewById(R.id.contacts);
+        contact.setLayoutManager(new LinearLayoutManager(getContext()));
+        contact.setHasFixedSize(true);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                volleyDoctorRequest(dbColumnList.address);
+                volleyContactRequest(dbColumnList.address);
+            }
+        },2000);
         return view;
+    }
+
+
+    // loading Doctors / Nurses for patient
+    public void volleyDoctorRequest(String url){
+        String  REQUEST_TAG = "com.volley.volleyDoctorRequest";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.length()>2){
+                            allResult = response;
+//                           Toast.makeText(getApplicationContext(), response ,Toast.LENGTH_LONG).show();
+                            new ReadDoctorsJSON().execute();
+                        }else{
+                            new LoadLocalDoctor().execute();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        new LoadLocalDoctor().execute();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("opr", "loadDoctors");
+                params.put("userID", userID);
+                return params;
+            }
+        };
+        AppSingleton.getInstance(getActivity()).addToRequestQueue(postRequest, REQUEST_TAG);
+    }
+
+    class ReadDoctorsJSON extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                allDoctorList.clear();
+                JSONArray jsonarray = new JSONArray(allResult);
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject = jsonarray.getJSONObject(i);
+                    dbHelper.saveDoctorInformation(
+                            jsonobject.getString("docId"),jsonobject.getString("docname"),
+                            jsonobject.getString("dateReg"),jsonobject.getString("gender"),
+                            jsonobject.getString("phone"),jsonobject.getString("email"),
+                            jsonobject.getString("doctype"),jsonobject.getString("contactAdd")
+                    );
+                    myModels.Doctor noticeList = new myModels().new Doctor(
+                            jsonobject.getString("docname"),
+                            jsonobject.getString("email"),
+                            jsonobject.getString("phone")
+                    );
+
+                    allDoctorList.add(noticeList);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            doctorListAdapter = new doctorAdapter( allDoctorList, getContext(), new doctorAdapter.OnItemClickListener() {});
+            doctorListAdapter.notifyDataSetChanged();
+            doctor.setAdapter(doctorListAdapter);
+            super.onPostExecute(s);
+        }
+    }
+
+
+    class LoadLocalDoctor extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+                allDoctorList.clear();
+                Cursor docs = dbHelper.getAllDoctor();
+                if(docs.getCount() > 0){
+                    while (docs.moveToNext()) {
+                        myModels.Doctor noticeList = new myModels().new Doctor(
+                                docs.getString(docs.getColumnIndex(dbColumnList.hospitalDocInfo.COLUMN_DOCNAME)),
+                                docs.getString(docs.getColumnIndex(dbColumnList.hospitalDocInfo.COLUMN_EMAIL)),
+                                docs.getString(docs.getColumnIndex(dbColumnList.hospitalDocInfo.COLUMN_PHONE))
+                        );
+
+                        allDoctorList.add(noticeList);
+                    }
+                }
+               docs.close();
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            doctorListAdapter = new doctorAdapter( allDoctorList, getContext(), new doctorAdapter.OnItemClickListener() {});
+            doctorListAdapter.notifyDataSetChanged();
+            doctor.setAdapter(doctorListAdapter);
+
+            super.onPostExecute(s);
+        }
+    }
+
+//    Loading Doctors Ends
+
+    public void volleyContactRequest(String url){
+        String  REQUEST_TAG = "com.volley.volleyContactRequest";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.length()>2){
+                            allContactResult = response;
+//                           Toast.makeText(getApplicationContext(), response ,Toast.LENGTH_LONG).show();
+                            new ReadContactsJSON().execute();
+                        }else{
+                            new ReadContactsJSON().execute();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        new ReadContactsJSON().execute();
+                        System.out.println(error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("opr", "loadContacts");
+                params.put("userID", userID);
+                return params;
+            }
+        };
+        AppSingleton.getInstance(getActivity()).addToRequestQueue(postRequest, REQUEST_TAG);
+    }
+
+
+
+    class ReadContactsJSON extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                allContactList.clear();
+                JSONArray jsonarray = new JSONArray(allContactResult);
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    JSONObject jsonobject = jsonarray.getJSONObject(i);
+                    dbHelper.SaveContactInformation(
+                            jsonobject.getString("id"),jsonobject.getString("officeAddress"),
+                            jsonobject.getString("contactname"),jsonobject.getString("relationship"),
+                            jsonobject.getString("email"),jsonobject.getString("phone")
+                    );
+                    myModels.Doctor noticeList = new myModels().new Doctor(
+                            jsonobject.getString("contactname"),
+                            jsonobject.getString("email"),
+                            jsonobject.getString("phone")
+                    );
+
+                    allContactList.add(noticeList);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            contactListAdapter = new doctorAdapter( allContactList, getContext(), new doctorAdapter.OnItemClickListener() {});
+            contactListAdapter.notifyDataSetChanged();
+            contact.setAdapter(contactListAdapter);
+            super.onPostExecute(s);
+        }
+    }
+
+
+    class LoadLocalContact extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            allContactList.clear();
+            Cursor docs = dbHelper.getAllContact();
+            if(docs.getCount() > 0){
+                while (docs.moveToNext()) {
+                    myModels.Doctor noticeList = new myModels().new Doctor(
+                            docs.getString(docs.getColumnIndex(dbColumnList.contactInfo.COLUMN_CONTACTNAME)),
+                            docs.getString(docs.getColumnIndex(dbColumnList.contactInfo.COLUMN_EMAIL)),
+                            docs.getString(docs.getColumnIndex(dbColumnList.contactInfo.COLUMN_PHONE))
+                    );
+
+                    allContactList.add(noticeList);
+                }
+            }
+            docs.close();
+
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            contactListAdapter = new doctorAdapter( allContactList, getContext(), new doctorAdapter.OnItemClickListener() {});
+            contactListAdapter.notifyDataSetChanged();
+            contact.setAdapter(contactListAdapter);
+            super.onPostExecute(s);
+        }
     }
 
 
@@ -195,18 +519,18 @@ public class Profile extends Fragment {
         noweek.setText(weekCount + "\n Weeks");
         nomonth.setText(monthCount + "\n Months");
 
-        dayC.setText(dayCount +"\n Days");
-        weekC.setText(weekCount + "\n Weeks");
-        monthC.setText(monthCount + "\n Months");
 
         progressBar.setProgress(dayCount);
 
         if (monthCount<=3){
             trim.setText("First Trimester");
+            trimCount = 0;
         }else if (monthCount <=6){
             trim.setText("Second Trimester");
+            trimCount = 1;
         }else{
             trim.setText("Third Trimester");
+            trimCount = 3;
         }
 
 

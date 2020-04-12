@@ -129,21 +129,25 @@ public class HomeScreen extends AppCompatActivity implements Profile.OnFragmentI
                         break;
                     case R.id.day:
                         intent = new Intent(getApplicationContext(), DailyTips.class);
+                        intent.putExtra("TABID","0");
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         break;
                     case R.id.week:
                         intent = new Intent(getApplicationContext(), WeeklyTips.class);
+                        intent.putExtra("TABID","0");
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         break;
                     case R.id.month:
                         intent = new Intent(getApplicationContext(), MonthlyTips.class);
+                        intent.putExtra("TABID","0");
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         break;
                     case R.id.nutrition:
                         intent = new Intent(getApplicationContext(), NutritionTips.class);
+                        intent.putExtra("TABID","0");
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         break;
@@ -154,11 +158,13 @@ public class HomeScreen extends AppCompatActivity implements Profile.OnFragmentI
                         break;
                     case R.id.trimester:
                         intent = new Intent(getApplicationContext(), TrimesterTips.class);
+                        intent.putExtra("TABID","0");
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         break;
                     case R.id.fetal:
                         intent = new Intent(getApplicationContext(), FetalTips.class);
+                        intent.putExtra("TABID","0");
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         break;

@@ -77,4 +77,26 @@ public class myModels {
             return date;
         }
     }
+
+    public class Doctor{
+        String docName, docPhone, docEmail;
+
+        public Doctor(String docName, String docPhone, String docEmail) {
+            this.docName = docName;
+            this.docPhone = docPhone;
+            this.docEmail = docEmail;
+        }
+
+        public String getDocName() {
+            return docName;
+        }
+
+        public String getDocPhone() {
+            return docPhone;
+        }
+
+        public String getDocEmail() {
+            return docEmail;
+        }
+    }
 }

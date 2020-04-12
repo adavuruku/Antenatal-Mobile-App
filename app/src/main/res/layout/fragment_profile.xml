@@ -25,6 +25,10 @@
 
         <include layout="@layout/thirdcontent"/>
 
+        <include layout="@layout/fourthcontent"/>
+
+        <include layout="@layout/fifthcontent"/>
+
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

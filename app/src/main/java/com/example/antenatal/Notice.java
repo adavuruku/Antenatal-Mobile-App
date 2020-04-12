@@ -59,7 +59,7 @@ public class Notice extends Fragment {
     String search, allResult;
     ProgressBar progressBar;
     ArrayList<myModels.notice> noticeList;
-    String address = "https://antenantal.000webhostapp.com/antenatalrest.php";
+//    String address = "https://antenantal.000webhostapp.com/antenatalrest.php";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class Notice extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                volleyJsonArrayRequest(address);
+                volleyJsonArrayRequest(dbColumnList.address);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -85,7 +85,7 @@ public class Notice extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                volleyJsonArrayRequest(address);
+                volleyJsonArrayRequest(dbColumnList.address);
             }
         },SPLASH_TIME_OUT);
 
@@ -191,6 +191,7 @@ public class Notice extends Fragment {
                         allNoticeList.add(noticeList);
                     }
                 }
+                allnews.close();
             } finally { }
             return null;
         }

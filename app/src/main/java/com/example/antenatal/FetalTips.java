@@ -17,13 +17,15 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.Random;
 
 public class FetalTips extends AppCompatActivity implements FetalPage.OnFragmentInteractionListener{
-
+    int tabIndex = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fetal_tips);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -38,6 +40,11 @@ public class FetalTips extends AppCompatActivity implements FetalPage.OnFragment
         tabs.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+        tabIndex = Integer.parseInt(getIntent().getStringExtra("TABID"));
+        TabLayout.Tab tab = tabs.getTabAt(tabIndex);
+        tab.select();
+
         changeBackgroundImage();
     }
 

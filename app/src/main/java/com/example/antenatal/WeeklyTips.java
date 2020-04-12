@@ -39,6 +39,11 @@ public class WeeklyTips extends AppCompatActivity implements WeeklyPage.OnFragme
         tabs.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+        int tabIndex = Integer.parseInt(getIntent().getStringExtra("TABID"));
+        TabLayout.Tab tab = tabs.getTabAt(tabIndex);
+        tab.select();
+
         changeBackgroundImage();
     }
     public void changeBackgroundImage(){
