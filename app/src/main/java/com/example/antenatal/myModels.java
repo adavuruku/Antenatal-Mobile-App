@@ -99,4 +99,45 @@ public class myModels {
             return docEmail;
         }
     }
+    public class Appointment{
+        String  dateSchedule, valid, timeSchedule, doctype, docname, purpose, outcome;
+
+        public Appointment(String dateSchedule, String valid, String timeSchedule, String doctype, String docname, String purpose, String outcome) {
+            this.dateSchedule = dateSchedule;
+            this.valid = valid;
+            this.timeSchedule = timeSchedule;
+            this.doctype = doctype;
+            this.docname = docname;
+            this.purpose = purpose;
+            this.outcome = outcome;
+        }
+
+        public String getDateSchedule() {
+            return dateSchedule;
+        }
+
+        public String getValid() {
+            return valid;
+        }
+
+        public String getTimeSchedule() {
+            return timeSchedule;
+        }
+
+        public String getDoctype() {
+            return doctype;
+        }
+
+        public String getDocname() {
+            return docname;
+        }
+
+        public String getPurpose() {
+            return purpose;
+        }
+
+        public String getOutcome() {
+            return outcome;
+        }
+    }
 }
