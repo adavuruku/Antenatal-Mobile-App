@@ -56,7 +56,6 @@ public class readAppointment extends AppCompatActivity {
         Cursor cursor = dbHelper.getSchedule(noticeid);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
-            System.out.println(cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEOUTCOME)));
             dateSchedule.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEDATE)) +
                     " - "+ cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULETIME)) );
             doctorSchedule.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_DOCTYPE)) +  " " +

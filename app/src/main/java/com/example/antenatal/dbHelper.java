@@ -14,7 +14,7 @@ public class dbHelper extends SQLiteOpenHelper {
     // Database Info
     // Database Info
     public static final String DATABASE_NAME = "ANTN.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private Context mcontext;
     private SQLiteDatabase mdatabase;
 
@@ -449,14 +449,15 @@ public class dbHelper extends SQLiteOpenHelper {
                 null,
                 null,dbColumnList.userSchedule.COLUMN_DATEREG + " desc");
     }
-    public Cursor getAllPatientPendingSchedule(String status){
+    public Cursor getAllPatientPendingSchedule(){
+        String status = "0";
         SQLiteDatabase database = getReadableDatabase();
         return database.query(dbColumnList.userSchedule.TABLE_NAME,
                 null,
-                dbColumnList.userSchedule.COLUMN_SCHEDULESTATUS + " = ?",
+                dbColumnList.userSchedule.COLUMN_SCHEDULESTATUS + " = ? ",
                 new String[]{status},
                 null,
-                null,dbColumnList.userSchedule.COLUMN_DATEREG + " desc");
+                null,dbColumnList.userSchedule.COLUMN_HID + " desc Limit 1");
     }
 
     //delete all schedule

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -205,7 +206,7 @@ public class Profile extends Fragment {
     // loading Doctors / Nurses for patient
     public void volleyDoctorRequest(String url){
         String  REQUEST_TAG = "com.volley.volleyDoctorRequest";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest doctorRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -236,7 +237,11 @@ public class Profile extends Fragment {
                 return params;
             }
         };
-        AppSingleton.getInstance(getActivity()).addToRequestQueue(postRequest, REQUEST_TAG);
+        doctorRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,  // timeout in miliseconds
+                0, // number of times retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppSingleton.getInstance(getActivity()).addToRequestQueue(doctorRequest, REQUEST_TAG);
     }
 
     class ReadDoctorsJSON extends AsyncTask<String, Integer, String> {
@@ -314,17 +319,16 @@ public class Profile extends Fragment {
 
     public void volleyContactRequest(String url){
         String  REQUEST_TAG = "com.volley.volleyContactRequest";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest contactRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         if (response.length()>2){
                             allContactResult = response;
-//                           Toast.makeText(getApplicationContext(), response ,Toast.LENGTH_LONG).show();
                             new ReadContactsJSON().execute();
                         }else{
-                            new ReadContactsJSON().execute();
+                            new LoadLocalContact().execute();
                         }
                     }
                 },
@@ -332,8 +336,8 @@ public class Profile extends Fragment {
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        new ReadContactsJSON().execute();
-                        System.out.println(error);
+                        new LoadLocalContact().execute();
+                        System.out.println("Profile " + error);
                     }
                 }
         ) {
@@ -346,7 +350,11 @@ public class Profile extends Fragment {
                 return params;
             }
         };
-        AppSingleton.getInstance(getActivity()).addToRequestQueue(postRequest, REQUEST_TAG);
+        contactRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,  // timeout in miliseconds
+                0, // number of times retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppSingleton.getInstance(getActivity()).addToRequestQueue(contactRequest, REQUEST_TAG);
     }
 
 
@@ -403,7 +411,6 @@ public class Profile extends Fragment {
                             docs.getString(docs.getColumnIndex(dbColumnList.contactInfo.COLUMN_EMAIL)),
                             docs.getString(docs.getColumnIndex(dbColumnList.contactInfo.COLUMN_PHONE))
                     );
-
                     allContactList.add(noticeList);
                 }
             }

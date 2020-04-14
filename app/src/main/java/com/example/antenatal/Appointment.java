@@ -1,11 +1,14 @@
 package com.example.antenatal;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,9 +36,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.Context.ALARM_SERVICE;
 
 
 public class Appointment extends Fragment {
@@ -83,6 +90,7 @@ public class Appointment extends Fragment {
             public void onRefresh() {
                 volleyAppointmentRequest(dbColumnList.address);
                 mSwipeRefreshLayout.setRefreshing(false);
+
             }
         });
 
@@ -99,7 +107,7 @@ public class Appointment extends Fragment {
 
     public void volleyAppointmentRequest(String url){
         String  REQUEST_TAG = "com.volley.volleyAppointmentRequest";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest appointmentRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -108,7 +116,6 @@ public class Appointment extends Fragment {
                             new LoadLocalData().execute();
                         }else{
                             allResult = response;
-                            System.out.println(allResult);
                             new ReadJSON().execute();
                         }
                     }
@@ -130,7 +137,12 @@ public class Appointment extends Fragment {
                 return params;
             }
         };
-        AppSingleton.getInstance(getContext()).addToRequestQueue(postRequest, REQUEST_TAG);
+        appointmentRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,  // timeout in miliseconds
+                0, // number of times retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppSingleton.getInstance(getContext()).addToRequestQueue(appointmentRequest, REQUEST_TAG);
     }
 
 
@@ -236,7 +248,24 @@ public class Appointment extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
         progressBar.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.GONE);
+
+        createNotification();
     }
+
+
+    public void createNotification () {
+        Intent intent = new Intent(getActivity(), ReminderService.class);
+        PendingIntent sender = PendingIntent.getBroadcast(getActivity(), 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Get the AlarmManager service
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR,sender);
+        }
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),AlarmManager.INTERVAL_HOUR, sender);
+//        Toast.makeText(getActivity(), "I suppose start", Toast.LENGTH_LONG).show();
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
