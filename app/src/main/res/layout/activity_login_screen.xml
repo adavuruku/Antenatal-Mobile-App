@@ -61,7 +61,6 @@
                 android:lines="1"
 
                 android:padding="10dp"
-                android:text="ABUTH42639249"
                 android:longClickable="true"
                 android:maxLines="1"
                 android:textStyle="bold"
