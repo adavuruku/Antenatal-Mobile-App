@@ -1,20 +1,17 @@
 package com.example.antenatal;
-import android.app.Notification;
-import android.app.NotificationChannel ;
-import android.app.NotificationManager ;
-import android.app.PendingIntent ;
-import android.app.Service ;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent ;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.IBinder ;
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -61,7 +58,7 @@ public class ReminderService  extends BroadcastReceiver {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context , default_notification_channel_id ) ;
             mBuilder.setContentTitle( "Antenatal Schedule" ) ;
             mBuilder.setContentIntent(pendingIntent) ;
-            mBuilder.setContentText( dateSchedule + System.getProperty("line.separator") + doctorSchedule) ;
+            mBuilder.setContentText( dateSchedule + System.getProperty("line.separator") + doctorSchedule + System.getProperty("line.separator") +purposeSchedule) ;
             mBuilder.setSmallIcon(R.mipmap.ic_launcher_round ) ;
             mBuilder.setLights(Color.RED, 3000, 3000);
             mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000 });
@@ -70,7 +67,7 @@ public class ReminderService  extends BroadcastReceiver {
             mBuilder.setSound(sound);
             mBuilder.setGroup(GROUP_KEY_WORK_EMAIL);
             mBuilder.setStyle(new NotificationCompat.BigTextStyle()
-                    .bigText(purposeSchedule));
+                    .bigText(dateSchedule + System.getProperty("line.separator") + doctorSchedule + System.getProperty("line.separator") +purposeSchedule));
             mBuilder.setAutoCancel( true ) ;
             mBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
             mBuilder.setCategory(NotificationCompat.CATEGORY_CALL);
