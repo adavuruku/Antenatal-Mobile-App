@@ -29,6 +29,7 @@ public class DailyTips extends AppCompatActivity implements DailyPage.OnFragment
         t.setSubtitle("Daily Pregnancy Tips.");
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);

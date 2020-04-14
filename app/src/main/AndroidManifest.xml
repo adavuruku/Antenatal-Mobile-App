@@ -31,7 +31,9 @@
 
         <activity
             android:name=".HomeScreen"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+        </activity>
         <activity
             android:name=".LoginScreen"
             android:theme="@style/AppTheme" />
