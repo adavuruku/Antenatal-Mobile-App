@@ -14,7 +14,7 @@ public class dbHelper extends SQLiteOpenHelper {
     // Database Info
     // Database Info
     public static final String DATABASE_NAME = "ANTN.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private Context mcontext;
     private SQLiteDatabase mdatabase;
 
@@ -91,6 +91,7 @@ public class dbHelper extends SQLiteOpenHelper {
                 dbColumnList.userSchedule.COLUMN_HID + " VARCHAR, " +
                 dbColumnList.userSchedule.COLUMN_SCHEDULEDATE + " VARCHAR, " +
                 dbColumnList.userSchedule.COLUMN_SCHEDULEDOCTOR + " VARCHAR, " +
+                dbColumnList.userSchedule.COLUMN_DOCTYPE + " VARCHAR, " +
                 dbColumnList.userSchedule.COLUMN_SCHEDULEOUTCOME + " TEXT, " +
                 dbColumnList.userSchedule.COLUMN_SCHEDULESTATUS + " VARCHAR, " +
                 dbColumnList.userSchedule.COLUMN_SCHEDULETIME + " VARCHAR, " +
@@ -178,6 +179,13 @@ public class dbHelper extends SQLiteOpenHelper {
                 dbColumnList.contactInfo.COLUMN_CONTACTID +" = ? Limit 1",
                 new String[]{contactId},
                 null,
+                null,null);
+    }
+
+    //delete all schedule
+    public void deleteContact(){
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete(dbColumnList.contactInfo.TABLE_NAME,
                 null,null);
     }
 
@@ -273,7 +281,12 @@ public class dbHelper extends SQLiteOpenHelper {
                 null);
     }
 
-
+    //delete all schedule
+    public void deleteDoctors(){
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete(dbColumnList.hospitalDocInfo.TABLE_NAME,
+                null,null);
+    }
     //*********************** PREGNANT INFORMATION ***********************************************************
 
     public Cursor verifyPregnantInfoExist(String regno){
@@ -397,13 +410,14 @@ public class dbHelper extends SQLiteOpenHelper {
         return database.rawQuery(sql, null);
     }
     public void saveSchedule(String scheduleid, String scheduleDate, String scheduleTime,
-                             String scheduleDoctor,String scheduleStatus,
+                             String scheduleDoctor,String doctype, String scheduleStatus,
                              String scheduleOutcome,String schedulePurpose,String DateReg){
         SQLiteDatabase database = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(dbColumnList.userSchedule.COLUMN_HID, scheduleid);
         cv.put(dbColumnList.userSchedule.COLUMN_SCHEDULEDATE, scheduleDate);
         cv.put(dbColumnList.userSchedule.COLUMN_SCHEDULETIME, scheduleTime);
+        cv.put(dbColumnList.userSchedule.COLUMN_DOCTYPE, doctype);
         cv.put(dbColumnList.userSchedule.COLUMN_SCHEDULEDOCTOR, scheduleDoctor);
         cv.put(dbColumnList.userSchedule.COLUMN_SCHEDULESTATUS, scheduleStatus);
         cv.put(dbColumnList.userSchedule.COLUMN_SCHEDULEOUTCOME, scheduleOutcome);

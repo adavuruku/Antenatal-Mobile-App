@@ -26,19 +26,17 @@ import org.w3c.dom.Text;
 
 import java.util.Random;
 
-public class readNotice extends AppCompatActivity {
+public class readAppointment extends AppCompatActivity {
     Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    TextView title, author, date;
+    TextView dateSchedule, doctorSchedule, outcomeSchedule, purposeSchedule;
     TextView body;
     dbHelper dbHelper;
-    String noticeid, userID, DrawerFullname, DrawerEmail;
-    private NavigationView navigationView;
+    String noticeid, userID;
     private SharedPreferences MyId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_notice);
+        setContentView(R.layout.activity_read_appointment);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,20 +46,23 @@ public class readNotice extends AppCompatActivity {
         noticeid = getIntent().getStringExtra("NEWSID");
 
 
-        title = findViewById(R.id.title);
-        date = findViewById(R.id.date);
-        author = findViewById(R.id.author);
-        body = findViewById(R.id.body);
+        dateSchedule = findViewById(R.id.dateSchedule);
+        outcomeSchedule = findViewById(R.id.outcomeSchedule);
+        doctorSchedule = findViewById(R.id.doctorSchedule);
+        purposeSchedule = findViewById(R.id.purposeSchedule);
 
         //retrieve info from sqlite
         dbHelper = new dbHelper(getApplicationContext());
-        Cursor cursor = dbHelper.getANotice(noticeid);
+        Cursor cursor = dbHelper.getSchedule(noticeid);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
-            title.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.abuadNotice.COLUMN_TITLE)));
-            date.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.abuadNotice.COLUMN_NOTICEDATE)));
-            author.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.abuadNotice.COLUMN_AUTHOR)));
-            body.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.abuadNotice.COLUMN_DESCRIPTION)));
+            System.out.println(cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEOUTCOME)));
+            dateSchedule.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEDATE)) +
+                    " - "+ cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULETIME)) );
+            doctorSchedule.setText(cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_DOCTYPE)) +  " " +
+                    cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEDOCTOR)));
+            purposeSchedule.setText("\n\nPurpose : \n\n"+ cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_PURPOSE)));
+            outcomeSchedule.setText("\n\nOutCome : \n\n"+ cursor.getString(cursor.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEOUTCOME)));
         }
 
         MyId = this.getSharedPreferences("MyId", this.MODE_PRIVATE);

@@ -126,7 +126,7 @@ public class LoginScreen extends AppCompatActivity {
                         if(pd.isShowing()){
                             pd.hide();
                         }
-                        displayMessage(error + " - Error: No Internet Connection !!!");
+                        displayMessage("Error: No Internet Connection !!!");
                     }
                 }
         ) {

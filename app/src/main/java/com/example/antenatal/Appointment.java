@@ -51,11 +51,11 @@ public class Appointment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-    private List<myModels.notice> allNoticeList;
+    private List<myModels.Appointment> allNoticeAppointment;
     private static int SPLASH_TIME_OUT = 500;//5seconds
     SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView recyclerView;
-    private noticeAdapter recyclerAdapter;
+    private appointmentAdapter recyclerAdapter;
     String search, userID, allResult;
     ProgressBar progressBar;
     SharedPreferences MyId;
@@ -66,21 +66,22 @@ public class Appointment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_appointment, container, false);
 
-        recyclerView = rootView.findViewById(R.id.recycler_view);
+        recyclerView = rootView.findViewById(R.id.appointment);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
+
         progressBar =  rootView.findViewById(R.id.simpleProgressBar);
 
         MyId = getActivity().getSharedPreferences("MyId", getActivity().MODE_PRIVATE);
         userID = MyId.getString("MyId", "");
-        allNoticeList = new ArrayList<>();
+        allNoticeAppointment = new ArrayList<>();
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipeToRefresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                volleyJsonArrayRequest(dbColumnList.address);
+                volleyAppointmentRequest(dbColumnList.address);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -88,7 +89,7 @@ public class Appointment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                volleyJsonArrayRequest(dbColumnList.address);
+                volleyAppointmentRequest(dbColumnList.address);
             }
         },SPLASH_TIME_OUT);
 
@@ -96,8 +97,8 @@ public class Appointment extends Fragment {
     }
 
 
-    public void volleyJsonArrayRequest(String url){
-        String  REQUEST_TAG = "com.volley.volleyJsonArrayRequest";
+    public void volleyAppointmentRequest(String url){
+        String  REQUEST_TAG = "com.volley.volleyAppointmentRequest";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -107,6 +108,7 @@ public class Appointment extends Fragment {
                             new LoadLocalData().execute();
                         }else{
                             allResult = response;
+                            System.out.println(allResult);
                             new ReadJSON().execute();
                         }
                     }
@@ -139,48 +141,33 @@ public class Appointment extends Fragment {
 
             try {
                 dbHelper = new dbHelper(getContext());
-                allNoticeList.clear();
+                dbHelper.deleteSchedule();
+                allNoticeAppointment.clear();
                 JSONArray jsonarray = new JSONArray(allResult);
                 for (int i = 0; i < jsonarray.length(); i++) {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
-                    dbHelper.saveNotice(
-                            jsonobject.getString("noticeid"), jsonobject.getString("NoticeDescription"),
-                            jsonobject.getString("author"), jsonobject.getString("title"),
-                            jsonobject.getString("noticeDate"), jsonobject.getString("delStatus")
+                    dbHelper.saveSchedule(
+                            jsonobject.getString("recid"), jsonobject.getString("dateSchedule"),
+                            jsonobject.getString("timeSchedule"), jsonobject.getString("docname"),
+                            jsonobject.getString("doctype"),jsonobject.getString("valid"),
+                            jsonobject.getString("outcome"),jsonobject.getString("purpose"),
+                            jsonobject.getString("dateScheduleReg")
                     );
-
-
-//                    {
-//                        "id":1,
-//                            "HID":"ABUTH42639249",
-//                            "dateSchedule":"2020-04-30 00:00:00",
-//                            "purpose":"Appoi",
-//                            "byId":"ABUTH188087",
-//                            "valid":1,
-//                            "timeSchedule":"23:23:00",
-//                            "docid":"ABUTH188087",
-//                            "outcome":"Done",
-//                            "dateReg":"2020-02-19 10:17:59",
-//                            "docId":"ABUTH188087",
-//                            "doctype":"Doctor",
-//                            "docname":"Abdulraheem Sherif Adavuruku",
-//                            "phone":"08164377187",
-//                            "email":"aabdulraheemsherif@gmail.com",
-//                            "contactAdd":"D41 Inike Okene Kogi State",
-//                            "active":0,
-//                            "gender":"Male",
-//                            "recid":8
-//                    },
 
                     myModels.Appointment noticeList = new myModels().new Appointment(
-                            jsonobject.getString("NoticeDescription"),
-                            jsonobject.getString("title"),
-                            jsonobject.getString("author"),
-                            jsonobject.getString("noticeDate"),
-                            jsonobject.getString("noticeid")
+                            jsonobject.getString("dateSchedule"),
+                            jsonobject.getString("valid"),
+                            jsonobject.getString("timeSchedule"),
+                            jsonobject.getString("doctype"),
+                            jsonobject.getString("docname"),
+                            jsonobject.getString("purpose"),
+                            jsonobject.getString("outcome"),
+                            jsonobject.getString("recid")
                     );
 
-                    allNoticeList.add(noticeList);
+                    System.out.println(noticeList);
+
+                    allNoticeAppointment.add(noticeList);
                 }
 
             } catch (JSONException e) {
@@ -203,20 +190,22 @@ public class Appointment extends Fragment {
 
             try {
                 dbHelper = new dbHelper(getContext());
-                allNoticeList.clear();
-                Cursor allnews = dbHelper.getAllNotice();
+                allNoticeAppointment.clear();
+                Cursor allnews = dbHelper.getAllSchedule();
                 if (allnews.getCount() > 0) {
                     while (allnews.moveToNext()) {
-
-                        myModels.notice noticeList = new myModels().new notice(
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.abuadNotice.COLUMN_DESCRIPTION)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.abuadNotice.COLUMN_TITLE)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.abuadNotice.COLUMN_AUTHOR)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.abuadNotice.COLUMN_NOTICEDATE)),
-                                allnews.getString(allnews.getColumnIndex(dbColumnList.abuadNotice.COLUMN_ID))
+                        myModels.Appointment noticeList = new myModels().new Appointment(
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEDATE)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULESTATUS)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULETIME)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_DOCTYPE)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEDOCTOR)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_PURPOSE)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_SCHEDULEOUTCOME)),
+                                allnews.getString(allnews.getColumnIndex(dbColumnList.userSchedule.COLUMN_HID))
                         );
 
-                        allNoticeList.add(noticeList);
+                        allNoticeAppointment.add(noticeList);
                     }
                 }
                 allnews.close();
@@ -231,17 +220,16 @@ public class Appointment extends Fragment {
     }
 
     public void loadData(){
-        recyclerAdapter = new noticeAdapter( allNoticeList, getContext(), new noticeAdapter.OnItemClickListener() {
+        recyclerAdapter = new appointmentAdapter( allNoticeAppointment, getContext(), new appointmentAdapter.OnItemClickListener() {
             @Override
             public void onNameClick(View v, int position) {
-                String postid =  allNoticeList.get(position).getNoticeID();
-
+                String postid =  allNoticeAppointment.get(position).getRecid();
+//
 //            Toast.makeText(getContext(),"Welcome "+ studentName + " To ABUAD IT - MOBILE APP",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), readNotice.class);
+                Intent intent = new Intent(getActivity(), readAppointment.class);
                 intent.putExtra("NEWSID",postid);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                //getActivity().finish();
             }
         });
         recyclerAdapter.notifyDataSetChanged();

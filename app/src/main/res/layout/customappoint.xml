@@ -15,9 +15,14 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
+        android:layout_margin="5dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        app:cardCornerRadius="2dp"
+        android:alpha="0.9"
         app:contentPadding="8dp"
-        android:alpha="0.85"
         app:layout_anchorGravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +43,7 @@
             android:orientation="horizontal"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/scheduledate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -65,18 +70,19 @@
 
 
             <TextView
-                android:id="@+id/phone"
+                android:id="@+id/appoint_doctor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:justificationMode="inter_word"
                 app:fontFamily="sans-serif-medium"
-                android:textColor="@color/colorText"
+                android:textColor="@color/newBack"
+                android:textStyle="bold"
                 android:lineSpacingExtra="6dp"
                 android:text="Loading..." />
 
             <TextView
-                android:id="@+id/email"
+                android:id="@+id/appoint_purpose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

@@ -117,6 +117,7 @@ public class dbColumnList {
         public static final String TABLE_NAME = "userSchedule";
         public static final String COLUMN_HID = "hid";
         public static final String COLUMN_SCHEDULEDATE = "dateSchedule";
+        public static final String COLUMN_DOCTYPE = "docType";
         public static final String COLUMN_SCHEDULETIME = "timeSchedule";
         public static final String COLUMN_SCHEDULEDOCTOR = "docSchedule";
         public static final String COLUMN_SCHEDULEOUTCOME = "outcome";

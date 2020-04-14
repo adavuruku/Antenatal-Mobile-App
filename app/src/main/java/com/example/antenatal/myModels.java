@@ -100,9 +100,9 @@ public class myModels {
         }
     }
     public class Appointment{
-        String  dateSchedule, valid, timeSchedule, doctype, docname, purpose, outcome;
+        String  dateSchedule, valid, timeSchedule, doctype, docname, purpose, outcome,recid;
 
-        public Appointment(String dateSchedule, String valid, String timeSchedule, String doctype, String docname, String purpose, String outcome) {
+        public Appointment(String dateSchedule, String valid, String timeSchedule, String doctype, String docname, String purpose, String outcome, String recid) {
             this.dateSchedule = dateSchedule;
             this.valid = valid;
             this.timeSchedule = timeSchedule;
@@ -110,12 +110,15 @@ public class myModels {
             this.docname = docname;
             this.purpose = purpose;
             this.outcome = outcome;
+            this.recid = recid;
         }
 
         public String getDateSchedule() {
             return dateSchedule;
         }
-
+        public String getRecid() {
+            return recid;
+        }
         public String getValid() {
             return valid;
         }

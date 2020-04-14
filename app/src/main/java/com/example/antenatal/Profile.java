@@ -245,6 +245,7 @@ public class Profile extends Fragment {
         protected String doInBackground(String... strings) {
             try {
                 allDoctorList.clear();
+                dbHelper.deleteDoctors();
                 JSONArray jsonarray = new JSONArray(allResult);
                 for (int i = 0; i < jsonarray.length(); i++) {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
@@ -356,6 +357,7 @@ public class Profile extends Fragment {
         protected String doInBackground(String... strings) {
             try {
                 allContactList.clear();
+                dbHelper.deleteContact();
                 JSONArray jsonarray = new JSONArray(allContactResult);
                 for (int i = 0; i < jsonarray.length(); i++) {
                     JSONObject jsonobject = jsonarray.getJSONObject(i);
