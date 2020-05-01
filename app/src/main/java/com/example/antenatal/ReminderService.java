@@ -78,7 +78,7 @@ public class ReminderService  extends BroadcastReceiver {
                 mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID) ;
                 mNotificationManager.createNotificationChannel(notificationChannel) ;
             }
-            mNotificationManager.notify(( int ) System.currentTimeMillis (),mBuilder.build());
+            mNotificationManager.notify(200,mBuilder.build());
         }
     }
 

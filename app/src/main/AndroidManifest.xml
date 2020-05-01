@@ -22,7 +22,11 @@
             android:exported = "true"
             android:stopWithTask="false"  >
         </receiver>
-
+        <receiver android:name=".myAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".readAppointment"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
