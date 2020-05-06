@@ -2,6 +2,7 @@ package com.example.antenatal;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -84,6 +85,17 @@ public class ReadTips extends AppCompatActivity {
                 profile_pic.setImageResource(R.drawable.baby12);
                 break;
 
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -51,13 +51,17 @@ public class Profile extends Fragment {
     CardView month, day, week;
     doctorAdapter doctorListAdapter,contactListAdapter ;
     RecyclerView doctor,contact;
+
+    Handler mHandler;
+
+
     private List<myModels.Doctor> allDoctorList, allContactList;
 
     private dbHelper dbHelper;
 
     private OnFragmentInteractionListener mListener;
     private SharedPreferences MyId;
-    String userID,allResult,allContactResult;
+    String userID,allResult,allContactResult,allPregInfo;
     int dayCount,monthCount,weekCount,trimCount;
     public Profile() {
         // Required empty public constructor
@@ -191,6 +195,9 @@ public class Profile extends Fragment {
         contact.setLayoutManager(new LinearLayoutManager(getContext()));
         contact.setHasFixedSize(true);
 
+        mHandler = new Handler();
+        mStatusChecker.run();
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -200,6 +207,84 @@ public class Profile extends Fragment {
             }
         },2000);
         return view;
+    }
+
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                volleyPregInfoRequest(dbColumnList.address);
+            } finally {
+                mHandler.postDelayed(mStatusChecker, 60000);
+            }
+        }
+    };
+
+    public void volleyPregInfoRequest(String url){
+        String  REQUEST_TAG = "com.volley.volleyPregInfoRequest";
+        StringRequest pregInfoRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.length()>2){
+                            allPregInfo = response;
+                            new ReadPregInfoJSON().execute();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("opr", "loadPregInfo");
+                params.put("userID", userID);
+                return params;
+            }
+        };
+        pregInfoRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppSingleton.getInstance(getActivity()).addToRequestQueue(pregInfoRequest, REQUEST_TAG);
+    }
+
+
+    class ReadPregInfoJSON extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+
+                JSONArray jsonarray = new JSONArray(allPregInfo);
+
+                JSONObject jsonobject = jsonarray.getJSONObject(0);
+
+                dbHelper.savePregnantInformation(
+                        jsonobject.getString("HID"),
+                        jsonobject.getString("pregStart"),
+                        jsonobject.getString("pregExpectedEndDate"),
+                        jsonobject.getString("NoOfBaby"),
+                        jsonobject.getString("babyGenderDescription")
+                );
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            LoadLocalData();
+            super.onPostExecute(s);
+        }
     }
 
 

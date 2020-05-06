@@ -2,6 +2,7 @@ package com.example.antenatal;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -93,6 +94,17 @@ public class TrimesterTips extends AppCompatActivity implements TrimesterPage.On
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
