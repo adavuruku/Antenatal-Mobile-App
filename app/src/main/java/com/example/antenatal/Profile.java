@@ -537,6 +537,9 @@ public class Profile extends Fragment {
                             allnews.getString(allnews.getColumnIndex(dbColumnList.pregnantInformation.COLUMN_ENDDATE))
                     );
 
+                    System.out.println(END);
+                    System.out.println(START);
+
                     Calendar startDate = Calendar.getInstance();
                     Calendar endDate = Calendar.getInstance();
                     startDate.set(START.getYear()+1900,START.getMonth(),START.getDay());
@@ -545,8 +548,8 @@ public class Profile extends Fragment {
                     String DATE_FORMATTWO= "EEE, dd MMMM yyyy";
                     SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMATTWO);
 
-                    ldp.setText("Conception Date : " + dateFormat.format(startDate.getTime()));
-                    dd.setText("Expected Due Date : "+ dateFormat.format(endDate.getTime()));
+                    ldp.setText("Conception Date : " + dateFormat.format(START));
+                    dd.setText("Expected Due Date : "+ dateFormat.format(END));
 
 //                    calendarView2.setMaxDate(endDate.getTimeInMillis());
 

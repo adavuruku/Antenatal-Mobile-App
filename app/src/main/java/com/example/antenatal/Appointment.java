@@ -40,7 +40,7 @@ import java.util.Map;
 public class Appointment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-
+    Handler mHandler;
     public Appointment() {
         // Required empty public constructor
     }
@@ -94,9 +94,21 @@ public class Appointment extends Fragment {
             }
         },SPLASH_TIME_OUT);
 
+        mHandler = new Handler();
         return rootView;
     }
 
+
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                volleyAppointmentRequest(dbColumnList.address);
+            } finally {
+               mHandler.postDelayed(mStatusChecker, 120000);
+            }
+        }
+    };
 
     public void volleyAppointmentRequest(String url){
         String  REQUEST_TAG = "com.volley.volleyAppointmentRequest";
@@ -131,8 +143,8 @@ public class Appointment extends Fragment {
             }
         };
         appointmentRequest.setRetryPolicy(new DefaultRetryPolicy(
-                3000,  // timeout in miliseconds
-                0, // number of times retry
+                3000,
+                0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(getContext()).addToRequestQueue(appointmentRequest, REQUEST_TAG);
